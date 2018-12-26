@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mission Control</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href= "{{ url_for('static',filename='css/skeleton.css') }}" rel="stylesheet" media="screen">
+        <link href= "{{ url_for('static',filename='css/normalize.css') }}" rel="stylesheet" media="screen">
+        <link href= "{{ url_for('static',filename='css/style.css') }}" rel="stylesheet" media="screen">
+        <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Mission Control</h1>
+            <div class="row">
+                <div class="six columns">
+                    <table class="u-full-width">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Pos.</th>
+                                <th></th>
+                                <th>Player</th>
+                                <th>Game</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for player in players %}
+                                <tr>
+                                    <td>{{player.number}}</td>
+                                    <td>{{player.position}}
+                                    <td>
+                                        <img id="headshot" src="{{player.headshot_url}}">
+                                    </td>
+                                    <td>{{player.name}}</td>
+                                    <td>{{player.id}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <button class="button-primary">Button element</button>
+                </div>
+                <div class="two columns">
+                </div>
+                <div class="three columns">
+                    <table class="u-full-width">
+                        <thead>
+                            <tr>
+                                <th>Game</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for game in games %}
+                                <tr>
+                                    <td>Game</td>
+                                    <td>
+                                        <a href="{{game.link}}">Link</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <button class="button-primary">Button element</button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
