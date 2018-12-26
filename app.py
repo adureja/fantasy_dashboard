@@ -1,5 +1,11 @@
+import os
 from flask import Flask
+
+# What config we using?
+print(os.environ['APP_SETTINGS'])
+
 app = Flask(__name__)
+app.config.from_object(os.environ['APP_SETTINGS'])
 
 
 @app.route('/')
