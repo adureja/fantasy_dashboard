@@ -12,12 +12,11 @@
         <div class="container">
             <h1>Mission Control</h1>
             <div class="row">
-                <div class="six columns">
+                <div class="eight columns">
                     <table class="u-full-width">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Pos.</th>
+                                <th></th>
                                 <th></th>
                                 <th>Player</th>
                                 <th>Game</th>
@@ -26,12 +25,18 @@
                         <tbody>
                             {% for player in players %}
                                 <tr>
-                                    <td>{{player.number}}</td>
-                                    <td>{{player.position}}
+                                    <td>
+                                        #{{player.number}}
+                                        <br />
+                                        {{player.position}}
+                                    </td>
                                     <td>
                                         <img id="headshot" src="{{player.headshot_url}}">
                                     </td>
-                                    <td>{{player.name}}</td>
+                                    <td>
+                                        {{player.name}}
+                                        <a class="button" id="video" target="_blank" href="{{player.headshot_url}}"> • ON AIR</a>
+                                    </td>
                                     <td>{{player.id}}</td>
                                 </tr>
                             {% endfor %}
@@ -39,7 +44,7 @@
                     </table>
                     <button class="button-primary">Button element</button>
                 </div>
-                <div class="two columns">
+                <div class="one column">
                 </div>
                 <div class="three columns">
                     <table class="u-full-width">
@@ -54,7 +59,7 @@
                                 <tr>
                                     <td>Game</td>
                                     <td>
-                                        <a href="{{game.link}}">Link</a>
+                                        <a target="_blank" href="{{game.preferred_link}}">Link</a>
                                     </td>
                                 </tr>
                             {% endfor %}

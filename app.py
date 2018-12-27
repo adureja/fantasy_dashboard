@@ -1,15 +1,16 @@
 import os
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from util.player import Player
-from util.game import Game
+from util.player import PlayerObject
+from util.game import GameObject
+
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-from models import Player
+from models import *
 
 ## Home Dashboard
 @app.route('/')
@@ -26,10 +27,10 @@ def mission_control():
     return render_template('dashboard.html', players=get_players(), games=get_games())
 
 def get_players():
-    return [Player(name) for name in get_player_names()]
+    return [PlayerObject(name) for name in get_player_names()]
 
 def get_games():
-    return [Game("OKC")]
+    return [GameObject("wizards")]
 
 def get_player_names():    
     return [
