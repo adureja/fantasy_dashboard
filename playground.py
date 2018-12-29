@@ -15,7 +15,6 @@ def get_proxies():
     return proxies
 
 
-#If you are copy pasting proxy ips, put in the list below
 #proxies = ['121.129.127.209:80', '124.41.215.238:45169', '185.93.3.123:8080', '194.182.64.67:3128', '106.0.38.174:8080', '163.172.175.210:3128', '13.92.196.150:8080']
 proxies = get_proxies()
 print(proxies)
