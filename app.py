@@ -34,7 +34,7 @@ def home_name(name):
 ## Mission Control
 @app.route('/dashboard')
 def mission_control():
-    #q.empty()
+    q.empty()
     start_redis_queue_for_players()
     #return "Welcome back {}!".format(name)
     players = get_players()
