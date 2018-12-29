@@ -50,7 +50,7 @@ def get_games():
 def queue_games():
     teams = set([p.team.lower() for p in Player.query.filter_by(next_game_date=get_date_today())])
     for team in teams:
-        print team
+        print(team)
         add_game_to_db(team)
 
 def add_game_to_db(name):
