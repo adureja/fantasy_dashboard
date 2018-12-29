@@ -1,19 +1,76 @@
+.blink_me {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.disabled {
+    pointer-events: none;
+}
+
+#heading {
+    display: inline-block;
+}
+
 #headshot {
-	height: 60px;
+    height: 60px;
     opacity: 0.8;
     filter: alpha(opacity=50);
     margin-bottom: -5px;
-    margin-right: -30px;
+    margin-right: -10px;
+    display: inline-block;
+    user-drag: none; 
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.offline {
+    opacity: 0.3;
+}
+
+.player-row {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+#rocket {
+    font-size: 3rem;
 }
 
 #video {
     font-size: smaller;
-    margin-left: 7%;
-    color: red;
-    background: white;
+    margin-right: 5%;
+    color: white;
+    background: red;
     margin-bottom: 0;
     padding: 5px;
     line-height: 100%;
     height: auto;
     border: 1px solid red;
+    float: right;
+
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    /*
+    Introduced in IE 10.
+    See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+    */
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#video_symbol {
+    display: inline-flex;
+    color: white;
 }

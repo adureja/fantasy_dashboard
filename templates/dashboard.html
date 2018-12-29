@@ -6,11 +6,17 @@
         <link href= "{{ url_for('static',filename='css/skeleton.css') }}" rel="stylesheet" media="screen">
         <link href= "{{ url_for('static',filename='css/normalize.css') }}" rel="stylesheet" media="screen">
         <link href= "{{ url_for('static',filename='css/style.css') }}" rel="stylesheet" media="screen">
+        <link href= "//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" media="screen">
         <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
     </head>
+    <header>
+      <div class="container">
+            <h1 id="heading">Mission Control</h1>
+            <span id="rocket" class="fa fa-rocket"></i>
+      </div>
+    </header>
     <body>
         <div class="container">
-            <h1>Mission Control</h1>
             <div class="row">
                 <div class="eight columns">
                     <table class="u-full-width">
@@ -24,25 +30,36 @@
                         </thead>
                         <tbody>
                             {% for player in players %}
-                                <tr>
+                                <tr class="player-row {{ "offline" if not player.next_game_date|has_game_today }}">
                                     <td>
-                                        #{{player.number}}
+                                        #{{player.jersey_num}}
                                         <br />
                                         {{player.position}}
                                     </td>
                                     <td>
-                                        <img id="headshot" src="{{player.headshot_url}}">
+                                        <img id="headshot" src="//ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{{player.nba_player_id}}.png">
                                     </td>
                                     <td>
                                         {{player.name}}
-                                        <a class="button" id="video" target="_blank" href="{{player.headshot_url}}"> • ON AIR</a>
+                                        {% if player.next_game_date|has_game_today %}
+                                            <a class="button" id="video" target="_blank" href="{{ games[player.team.lower()] }}">
+                                            <i id="video_symbol" class="fa fa-video-camera">
+                                            </i>
+                                        • ON AIR
+                                        {% else %}
+                                            <a class="button disabled" disabled id="video" target="_blank" href="//ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{{player.nba_player_id}}.png">
+                                        x OFFLINE
+                                        {% endif %}
                                     </td>
-                                    <td>{{player.id}}</td>
+                                    <td>
+                                        {{player.next_game_date}}
+                                        <br />
+                                        {{player.next_game_time}}
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
-                    <button class="button-primary">Button element</button>
                 </div>
                 <div class="one column">
                 </div>
