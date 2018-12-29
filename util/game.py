@@ -19,9 +19,9 @@ class GameObject(object):
         return "http://nba4free.com/"
 
     def get_preferred_link(self):
-    	r = requests.get(self.link)
-    	soup = BeautifulSoup(r.content, 'html5lib')
-    	#print(soup)
+        r = requests.get(self.link)
+        soup = BeautifulSoup(r.content, 'html5lib')
+        #print(soup)
 
         images = soup.findAll('img')
         for image in images:
@@ -31,8 +31,8 @@ class GameObject(object):
                 hd_link = parent_tr.find("a")['href']
                 #print(hd_link)
                 return hd_link
-    	# preferred_link_str = soup.find(string=self.team)
-    	# print(preferred_link_str)
-    	# print(preferred_link_str.find_parents("td"))
-    	#print(preferred_link_str)
-    	return self.link
+        # preferred_link_str = soup.find(string=self.team)
+        # print(preferred_link_str)
+        # print(preferred_link_str.find_parents("td"))
+        #print(preferred_link_str)
+        return self.link
