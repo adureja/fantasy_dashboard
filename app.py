@@ -1,16 +1,16 @@
-import os
+from datetime import datetime
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-from util.player import PlayerObject
-from util.game import GameObject
-
-from datetime import datetime
-
+import logging
+import os
 from rq import Queue
 from rq.job import Job
+import sys
+from util.player import PlayerObject
+from util.game import GameObject
 from worker import conn
-
 import time
+
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
