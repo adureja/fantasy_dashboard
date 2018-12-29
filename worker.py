@@ -1,5 +1,8 @@
 import os
 
+import pickle
+pickle.HIGHEST_PROTOCOL = 2
+
 import redis
 from rq import Worker, Queue, Connection
 
