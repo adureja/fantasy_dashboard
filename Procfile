@@ -1,1 +1,1 @@
-web: sh heroku.sh
+worker: sh heroku.sh
