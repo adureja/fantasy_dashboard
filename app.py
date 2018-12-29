@@ -35,14 +35,14 @@ def home_name(name):
 @app.route('/dashboard')
 def mission_control():
     #q.empty()
-    #start_redis_queue_for_players()
+    start_redis_queue_for_players()
     #return "Welcome back {}!".format(name)
     players = get_players()
     games = {game.team: game.link for game in get_games()}
     return render_template('dashboard.html', players=players, games=games)
 
 def get_games():
-    #queue_games()
+    queue_games()
     games = Game.query.filter_by(date=get_date_today())
 
     return games
