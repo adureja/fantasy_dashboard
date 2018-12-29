@@ -11,6 +11,7 @@ class Player(db.Model):
     name = db.Column(db.String())
     jersey_num = db.Column(db.Integer)
     position = db.Column(db.String())
+    pts = db.Column(db.Float)
     last_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
     last_updated = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
