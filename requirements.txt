@@ -14,7 +14,7 @@ itsdangerous==1.1.0
 Jinja2==2.10
 Mako==1.0.7
 MarkupSafe==1.1.0
-git+https://github.com/adureja/nba_api.git@1ab9eae6f30801e96fd359e460d44296876968a2
+git+https://github.com/adureja/nba_api.git@b7cbcf705daa9918b9408277b2809d9aee5fd0e6
 psycopg2==2.7.6.1
 python-dateutil==2.7.5
 python-editor==1.0.3
