@@ -139,13 +139,12 @@ def create_gamelog_object(player_id, game_id):
         print("Committing to db")
         try:
             db.session.commit()
-        except Exception, e:
+        except:
             db.session.rollback()
-            print str(e)
         print("Committed to db")
         return old_gamelog
-    except Exception, e:
-        print('cant: {}'.format(e))
+    except:
+        print('cant push gamelog')
         errors = []
         errors.append("Unable to add gamelog for {} to database.".format(player_id))
         return {"error": errors}
@@ -206,9 +205,8 @@ def create_game_object(team_name):
         print("Committing to db")
         try:
             db.session.commit()
-        except Exception, e:
+        except:
             db.session.rollback()
-            print str(e)
         print("Committed to db")
         return old_game_info
     except:
