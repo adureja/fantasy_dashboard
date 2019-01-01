@@ -44,7 +44,7 @@ def mission_control():
     print("Emptying redis queue...")
     #q.empty()
     print("Starting redis queue for players...")
-    #start_redis_queue_for_players()
+    start_redis_queue_for_players()
     #return "Welcome back {}!".format(name)
     print("Getting players...")
     players = get_players()
@@ -151,7 +151,7 @@ def create_gamelog_object(player_id, game_id):
 
 def get_games():
     clean_games_up()
-    #queue_games()
+    queue_games()
     games = Game.query.filter_by(date=get_date_today())
 
     return games
