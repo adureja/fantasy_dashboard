@@ -18,19 +18,21 @@
     <body>
         <div class="container">
             <div class="row">
-                <div class="eight columns">
+                <div class="twelve columns">
                     <table class="u-full-width">
                         <thead>
                             <tr>
                                 <th></th>
                                 <th></th>
+                                <th>FPTS</th>
                                 <th>Player</th>
+                                <th></th>
                                 <th>Game</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for player in players %}
-                                <tr class="player-row {{ "offline" if not player.next_game_date|has_game_today }}">
+                                <tr class="player-row {{ "offline" if not player.next_game_date|has_game_today }} {{ "finished" if player.nba_player_id in gamelogs and (not gamelogs[player.nba_player_id].is_in_progress and gamelogs[player.nba_player_id].period_quarter_number == 4) }}">
                                     <td>
                                         #{{player.jersey_num}}
                                         <br />
@@ -40,21 +42,32 @@
                                         <img id="headshot" src="//ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{{player.nba_player_id}}.png">
                                     </td>
                                     <td>
+                                        {% if player.nba_player_id in gamelogs and (gamelogs[player.nba_player_id].is_in_progress or gamelogs[player.nba_player_id].period_quarter_number == 4) %}
+                                            <div class="fpts">
+                                                {{ gamelogs[player.nba_player_id] | get_fantasy_pts }}
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                    <td>
                                         {{player.name}}
-                                        {% if player.next_game_date|has_game_today %}
-                                            <a class="button" id="video" target="_blank" href="{{ games[player.team.lower()] }}">
+                                        {% if player.nba_player_id in gamelogs %}
+                                            <br />
+                                            {{ gamelogs[player.nba_player_id] | get_statline }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if player.nba_player_id in gamelogs and (gamelogs[player.nba_player_id].is_in_progress or gamelogs[player.nba_player_id].period_quarter_number == 4) %}
+                                            <a class="button blink_me" id="video" target="_blank" href="{{ games[player.team.lower()] }}">
                                             <i id="video_symbol" class="fa fa-video-camera">
                                             </i>
-                                        • ON AIR
+                                        ON AIR
                                         {% else %}
                                             <a class="button disabled" disabled id="video" target="_blank" href="//ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{{player.nba_player_id}}.png">
                                         x OFFLINE
                                         {% endif %}
                                     </td>
                                     <td>
-                                        {{player.next_game_date}}
-                                        <br />
-                                        {{player.next_game_time}}
+                                        {{player.next_game_date}} @ {{player.next_game_time}}
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -74,9 +87,9 @@
                         <tbody>
                             {% for game in games %}
                                 <tr>
-                                    <td>Game</td>
+                                    <td>{{game.team}}</td>
                                     <td>
-                                        <a target="_blank" href="{{game.preferred_link}}">Link</a>
+                                        <a target="_blank" href="{{game.link}}">Watch</a>
                                     </td>
                                 </tr>
                             {% endfor %}
