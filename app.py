@@ -23,7 +23,7 @@ app.config['SQLALCHEMY_ECHO'] = True
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.logger.setLevel(logging.ERROR)
 db = SQLAlchemy(app)
-db.create_all()
+# db.create_all()
 q = Queue(connection=conn)
 #q.empty()
 
