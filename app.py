@@ -382,18 +382,18 @@ def gamelog_to_gamelog_model(gamelogObj):
     )
 
 @app.template_filter('get_statline')
-def get_statline(gamelog_model):
+def get_statline(gamelog):
     ## TODO: change arg to gamelog lol bc model shuld be passed in
-    gamelog = gamelog_to_gamelog_model(gamelog_model)
+    # gamelog = gamelog_to_gamelog_model(gamelog_model)
     if gamelog.minutes == "00:00":
         return "... has not played today."
     statline = "{} PTS, {} REB, {} AST, {} STL, {} BLK, {} TO".format(gamelog.points, gamelog.rebounds, gamelog.assists, gamelog.steals, gamelog.blocks, gamelog.turnovers)
     return statline
 
 @app.template_filter('get_fantasy_pts')
-def get_fantasy_pts(gamelog_model):
+def get_fantasy_pts(gamelog):
     ## TODO: change arg to gamelog lol bc model shuld be passed in
-    gamelog = gamelog_to_gamelog_model(gamelog_model)
+    # gamelog = gamelog_to_gamelog_model(gamelog_model)
     # print(vars(gamelog))
     total_pts = gamelog.points + gamelog.rebounds + gamelog.assists + gamelog.steals + gamelog.blocks - gamelog.turnovers
     return total_pts
