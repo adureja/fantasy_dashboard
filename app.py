@@ -285,7 +285,7 @@ def create_player_object(name):
     # job = q.enqueue_call(
     #     func=create_player_object, args=(name,), result_ttl=5000
     # )
-    print(job.get_id())
+    # print(job.get_id())
     try:
         print("Getting player from db for: {}".format(name))
         oldPlayer = Player.query.filter(Player.name==name).first()
