@@ -40,7 +40,7 @@ def home_name(name):
 
 ## Mission Control
 @app.route('/dashboard')
-def mission_control(queue_kickoff=False):
+def mission_control(queue_kickoff=True):
     if queue_kickoff:
         print("Emptying redis queue...")
         q.empty()
