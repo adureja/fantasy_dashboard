@@ -4,7 +4,7 @@ from datetime import datetime
 
 sched = BlockingScheduler()
 
-@sched.scheduled_job('interval', minutes=3)
+@sched.scheduled_job('interval', minutes=2)
 def sync_data():
     print('Syncing player/gamelog data at {}'.format(datetime.now()))
     print("Syncing players...")

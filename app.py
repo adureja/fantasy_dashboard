@@ -97,9 +97,9 @@ def add_gamelog_to_db(player_id, game_id):
 def create_gamelog_object(player_id, game_id):
     gamelog = GamelogObject(player_id, game_id)
     # time.sleep(2)
-    job = q.enqueue_call(
-        func=create_gamelog_object, args=(player_id, game_id,), result_ttl=5000
-    )
+    # job = q.enqueue_call(
+    #     func=create_gamelog_object, args=(player_id, game_id,), result_ttl=5000
+    # )
     # save the results
     # print("created gamelog obj: {}".format(vars(gamelog)))
     try:
@@ -183,9 +183,9 @@ def clean_games_up():
 def create_game_object(team_name):
     game = GameObject(team_name)
     # time.sleep(2)
-    job = q.enqueue_call(
-        func=create_game_object, args=(team_name,), result_ttl=5000
-    )
+    # job = q.enqueue_call(
+    #     func=create_game_object, args=(team_name,), result_ttl=5000
+    # )
     # save the results
     try:
         #print(team_name)
@@ -282,9 +282,9 @@ def create_player_object(name):
     #time.sleep(5)
 
     # save the results
-    job = q.enqueue_call(
-        func=create_player_object, args=(name,), result_ttl=5000
-    )
+    # job = q.enqueue_call(
+    #     func=create_player_object, args=(name,), result_ttl=5000
+    # )
     print(job.get_id())
     try:
         print("Getting player from db for: {}".format(name))
