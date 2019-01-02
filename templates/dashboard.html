@@ -32,7 +32,7 @@
                         </thead>
                         <tbody>
                             {% for player in players %}
-                                <tr class="player-row {{ "offline" if not player.next_game_date|has_game_today }} {{ "finished" if player.nba_player_id in gamelogs and (not gamelogs[player.nba_player_id].is_in_progress and gamelogs[player.nba_player_id].period_quarter_number == 4) }}">
+                                <tr class="player-row {{ "offline" if not player.next_game_date|has_game_today }} {{ "on_court" if player.nba_player_id in gamelogs and gamelogs[player.nba_player_id].is_on_court }} {{ "finished" if player.nba_player_id in gamelogs and (not gamelogs[player.nba_player_id].is_in_progress and gamelogs[player.nba_player_id].period_quarter_number == 4) }}">
                                     <td>
                                         #{{player.jersey_num}}
                                         <br />
@@ -60,7 +60,7 @@
                                             <a class="button blink_me" id="video" target="_blank" href="{{ games[player.team.lower()] }}">
                                             <i id="video_symbol" class="fa fa-video-camera">
                                             </i>
-                                        ON AIR
+                                        Q{{gamelogs[player.nba_player_id].period_quarter_number}} {{gamelogs[player.nba_player_id].period_minutes_left}}
                                         {% else %}
                                             <a class="button disabled" disabled id="video" target="_blank" href="//ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{{player.nba_player_id}}.png">
                                         x OFFLINE

@@ -40,18 +40,19 @@ def home_name(name):
 
 ## Mission Control
 @app.route('/dashboard')
-def mission_control():
-    print("Emptying redis queue...")
-    #q.empty()
-    print("Starting redis queue for players...")
-    start_redis_queue_for_players()
+def mission_control(queue_kickoff=False):
+    if queue_kickoff:
+        print("Emptying redis queue...")
+        q.empty()
+        print("Starting redis queue for players...")
+        start_redis_queue_for_players()
     #return "Welcome back {}!".format(name)
     print("Getting players...")
     players = get_players()
     print("Starting redis queue for games...")
-    games = {game.team: game.link for game in get_games()}
+    games = {game.team: game.link for game in get_games(queue_kickoff)}
     print("Rendering template for dashboard")
-    gamelogs = get_gamelogs(players)
+    gamelogs = get_gamelogs(players, queue_kickoff)
     return render_template('dashboard.html', players=players, games=games, gamelogs=gamelogs)
 
 # def get_gamelogs(players):
@@ -63,25 +64,26 @@ def mission_control():
 #     print(gamelogs)
 #     return gamelogs
 
-def get_gamelogs(players):
-    queue_gamelogs(players)
+def get_gamelogs(players, queue_kickoff):
+    if queue_kickoff:
+        queue_gamelogs(players)
     #gamelogs = GameLog.query.filter(GameLog.last_created.time.date()==datetime.today().date())
     players_today = [p for p in players if p.next_game_date == get_date_today()]
     gamelogs = query_db_for_todays_gamelogs(players_today)
     gamelogs = {int(gamelog.player_id): gamelog for gamelog in gamelogs}
-    print(gamelogs)
+    # print(gamelogs)
     return gamelogs
 
 def query_db_for_todays_gamelogs(players_today):
     gamelogs = [GameLog.query.filter(GameLog.game_id==p.next_game_id).filter(GameLog.player_id==str(p.nba_player_id)).first() for p in players_today]
     # gamelogs = GameLog.query.filter(GameLog.game_id.in_([p.next_game_id for p in players_today])).all()
-    print(gamelogs)
+    # print(gamelogs)
     return gamelogs
 
 def queue_gamelogs(players):
     players_today = [p for p in players if p.next_game_date == get_date_today()]
     for player in players_today:
-        print(player.name)
+        # print(player.name)
         add_gamelog_to_db(player.nba_player_id, player.next_game_id)
 
 def add_gamelog_to_db(player_id, game_id):
@@ -94,11 +96,11 @@ def add_gamelog_to_db(player_id, game_id):
 def create_gamelog_object(player_id, game_id):
     gamelog = GamelogObject(player_id, game_id)
     # time.sleep(2)
-    # job = q.enqueue_call(
-    #     func=create_game_object, args=(team_name,), result_ttl=5000
-    # )
+    job = q.enqueue_call(
+        func=create_gamelog_object, args=(player_id, game_id,), result_ttl=5000
+    )
     # save the results
-    print("created gamelog obj: {}".format(vars(gamelog)))
+    # print("created gamelog obj: {}".format(vars(gamelog)))
     try:
         #print(team_name)
         #print(get_date_today())
@@ -108,7 +110,7 @@ def create_gamelog_object(player_id, game_id):
         if old_gamelog:
             print("theres something here")
             #print(vars(game), vars(old_game_info))
-            print("curr old_gamelog: {}".format(vars(old_gamelog)))
+            # print("curr old_gamelog: {}".format(vars(old_gamelog)))
 
             old_gamelog.is_in_progress = gamelog.is_in_progress
             old_gamelog.is_on_court = gamelog.is_on_court
@@ -149,9 +151,10 @@ def create_gamelog_object(player_id, game_id):
         errors.append("Unable to add gamelog for {} to database.".format(player_id))
         return {"error": errors}
 
-def get_games():
+def get_games(queue_kickoff):
     clean_games_up()
-    queue_games()
+    if queue_kickoff:
+        queue_games()
     games = Game.query.filter_by(date=get_date_today())
 
     return games
@@ -159,7 +162,7 @@ def get_games():
 def queue_games():
     teams = set([p.team.lower() for p in Player.query.filter_by(next_game_date=get_date_today())])
     for team in teams:
-        print(team)
+        # print(team)
         add_game_to_db(team)
 
 def add_game_to_db(name):
@@ -172,16 +175,16 @@ def add_game_to_db(name):
 def clean_games_up():
     old_games = Game.query.filter(~(Game.date==get_date_today())).all()
     for game in old_games:
-        print(game)
+        print('Deleting:{}'.format(game))
         db.session.delete(game)
     db.session.commit()
 
 def create_game_object(team_name):
     game = GameObject(team_name)
     # time.sleep(2)
-    # job = q.enqueue_call(
-    #     func=create_game_object, args=(team_name,), result_ttl=5000
-    # )
+    job = q.enqueue_call(
+        func=create_game_object, args=(team_name,), result_ttl=5000
+    )
     # save the results
     try:
         #print(team_name)
@@ -253,7 +256,8 @@ def get_player_names():
         'Trevor Ariza',
         'Paul Millsap',
         'Otto Porter Jr.',
-        'Gary Harris'
+        'Gary Harris',
+        'Nemanja Bjelica'
     ]
 
     shuffle(currList)
@@ -273,13 +277,14 @@ def start_redis_queue_for_players():
 
 def create_player_object(name):
     currPlayer = PlayerObject(name)
-    print(vars(currPlayer))
+    # print(vars(currPlayer))
     #time.sleep(5)
+
     # save the results
-    # job = q.enqueue_call(
-    #     func=create_player_object, args=(name,), result_ttl=5000
-    # )
-    # print(job.get_id())
+    job = q.enqueue_call(
+        func=create_player_object, args=(name,), result_ttl=5000
+    )
+    print(job.get_id())
     try:
         print("Getting player from db for: {}".format(name))
         oldPlayer = Player.query.filter(Player.name==name).first()
@@ -293,9 +298,14 @@ def create_player_object(name):
             oldPlayer.last_updated = datetime.now()
             oldPlayer.team = currPlayer.team
             oldPlayer.team_id = currPlayer.team_id
-            oldPlayer.next_game_date = currPlayer.next_game_date
-            oldPlayer.next_game_time = currPlayer.next_game_time
-            oldPlayer.next_game_id = currPlayer.next_game_id
+            # print(datetime.now().time())
+            # print(datetime.now().time().hour)
+            # print(datetime.now().time().hour == int("12:00 PM"[:2]))
+            # print(7 == )
+            if (datetime.now().time().hour == int(oldPlayer.next_game_time[:2])):
+                oldPlayer.next_game_date = currPlayer.next_game_date
+                oldPlayer.next_game_time = currPlayer.next_game_time
+                oldPlayer.next_game_id = currPlayer.next_game_id
             print("updated oldPlayer: {}".format(vars(oldPlayer)))
         else:
             print("new player being created in database:")
@@ -384,7 +394,7 @@ def get_statline(gamelog_model):
 def get_fantasy_pts(gamelog_model):
     ## TODO: change arg to gamelog lol bc model shuld be passed in
     gamelog = gamelog_to_gamelog_model(gamelog_model)
-    print(vars(gamelog))
+    # print(vars(gamelog))
     total_pts = gamelog.points + gamelog.rebounds + gamelog.assists + gamelog.steals + gamelog.blocks - gamelog.turnovers
     return total_pts
 

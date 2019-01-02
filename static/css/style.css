@@ -41,6 +41,10 @@
     -ms-user-select: none;
 }
 
+.on_court {
+    background: sandybrown;
+}
+
 .offline {
     opacity: 0.3;
 }
