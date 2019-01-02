@@ -14,6 +14,7 @@ from util.gamelog import GamelogObject
 from worker import conn
 import time
 
+START_REDIS_QUEUE_FOR_DATA = False
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
@@ -40,7 +41,7 @@ def home_name(name):
 
 ## Mission Control
 @app.route('/dashboard')
-def mission_control(queue_kickoff=False):
+def mission_control(queue_kickoff=START_REDIS_QUEUE_FOR_DATA):
     if queue_kickoff:
         print("Emptying redis queue...")
         q.empty()
@@ -302,7 +303,7 @@ def create_player_object(name):
             # print(datetime.now().time().hour)
             # print(datetime.now().time().hour == int("12:00 PM"[:2]))
             # print(7 == )
-            if (datetime.now().time().hour%12 == int(oldPlayer.next_game_time[:2])):
+            if (datetime.now().time().hour%12 <= int(oldPlayer.next_game_time[:2])):
                 oldPlayer.next_game_date = currPlayer.next_game_date
                 oldPlayer.next_game_time = currPlayer.next_game_time
                 oldPlayer.next_game_id = currPlayer.next_game_id
