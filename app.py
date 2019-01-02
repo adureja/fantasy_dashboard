@@ -302,7 +302,7 @@ def create_player_object(name):
             # print(datetime.now().time().hour)
             # print(datetime.now().time().hour == int("12:00 PM"[:2]))
             # print(7 == )
-            if (datetime.now().time().hour == int(oldPlayer.next_game_time[:2])):
+            if (datetime.now().time().hour%12 == int(oldPlayer.next_game_time[:2])):
                 oldPlayer.next_game_date = currPlayer.next_game_date
                 oldPlayer.next_game_time = currPlayer.next_game_time
                 oldPlayer.next_game_id = currPlayer.next_game_id
