@@ -15,7 +15,7 @@ html5lib==1.0.1
 idna==2.8
 itsdangerous==1.1.0
 Jinja2==2.10
-lxml==4.2.5
+lxml==4.6.5
 Mako==1.0.7
 MarkupSafe==1.1.0
 git+git://github.com/adureja/nba_api.git@2e1f8ee55e513689aea410bf663a09a3d7c34283
